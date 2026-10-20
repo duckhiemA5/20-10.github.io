@@ -1,0 +1,173 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quà 20/10 💗</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    color: #c52e75;
+    background: linear-gradient(135deg, #ffe3ee, #ffb8d5);
+}
+
+main {
+    width: 100%;
+    max-width: 550px;
+}
+
+h1 { font-size: 30px; }
+
+#giftBtn {
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    font-size: 100px;
+    display: block;
+    margin: 25px auto;
+    animation: float 1.5s infinite ease-in-out;
+}
+
+#hint { font-size: 16px; }
+
+#letter {
+    display: none;
+    padding: 25px;
+    border-radius: 24px;
+    background: rgba(255,255,255,.9);
+    box-shadow: 0 10px 35px #c52e7533;
+    line-height: 1.8;
+}
+
+#letter.show {
+    display: block;
+    animation: appear .8s ease;
+}
+
+#musicBtn {
+    border: 0;
+    border-radius: 25px;
+    padding: 12px 20px;
+    color: white;
+    background: #e84393;
+    cursor: pointer;
+}
+
+.heart {
+    position: fixed;
+    bottom: -30px;
+    pointer-events: none;
+    animation: rise 4s linear forwards;
+}
+
+@keyframes float {
+    50% { transform: translateY(-12px) rotate(5deg); }
+}
+
+@keyframes appear {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes rise {
+    to { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+}
+</style>
+</head>
+
+<body>
+<main>
+    <h1>💗 Happy 20/10 💗</h1>
+    <p>Mình có một món quà dành cho bạn!</p>
+
+    <button id="giftBtn" aria-label="Mở hộp quà">🎁</button>
+    <p id="hint">Chạm vào hộp quà để mở nhé!</p>
+
+    <section id="letter">
+        <div style="font-size:45px">💖🌷💖</div>
+        <h2>Chúc mừng ngày 20/10!</h2>
+        <p>
+            Chúc các bạn nữ luôn xinh đẹp, vui vẻ và hạnh phúc.
+            Mong mỗi ngày đều ngập tràn tiếng cười, luôn tự tin
+            theo đuổi ước mơ và nhận được thật nhiều yêu thương.
+            Chúc các bạn có một ngày 20/10 thật tuyệt vời! 💕
+        </p>
+        <p><b>Thân gửi những cô gái tuyệt vời!</b></p>
+        <button id="musicBtn">▶ Bật nhạc</button>
+    </section>
+</main>
+
+<audio id="music" src="music.mp3" loop></audio>
+
+<script>
+const giftBtn = document.getElementById("giftBtn");
+const hint = document.getElementById("hint");
+const letter = document.getElementById("letter");
+const music = document.getElementById("music");
+const musicBtn = document.getElementById("musicBtn");
+
+giftBtn.addEventListener("click", async function () {
+    giftBtn.disabled = true;
+    giftBtn.style.animation = "none";
+    giftBtn.textContent = "✨💝✨";
+    hint.textContent = "Món quà đang mở ra...";
+
+    try {
+        await music.play();
+        musicBtn.textContent = "⏸ Tạm dừng nhạc";
+    } catch (e) {
+        musicBtn.textContent = "▶ Bật nhạc";
+    }
+
+    setTimeout(function () {
+        giftBtn.style.display = "none";
+        hint.style.display = "none";
+        letter.classList.add("show");
+        makeHearts();
+    }, 800);
+});
+
+musicBtn.addEventListener("click", async function () {
+    if (music.paused) {
+        try {
+            await music.play();
+            musicBtn.textContent = "⏸ Tạm dừng nhạc";
+        } catch (e) {
+            alert("Kiểm tra xem file music.mp3 đã nằm cùng thư mục chưa nhé!");
+        }
+    } else {
+        music.pause();
+        musicBtn.textContent = "▶ Bật nhạc";
+    }
+});
+
+function makeHearts() {
+    const symbols = ["💗", "💕", "💖", "🌸"];
+
+    for (let i = 0; i < 18; i++) {
+        const heart = document.createElement("span");
+        heart.className = "heart";
+        heart.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.animationDelay = Math.random() * 2 + "s";
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 6000);
+    }
+
+    setTimeout(() => {
+        if (letter.classList.contains("show")) makeHearts();
+    }, 4000);
+}
+</script>
+</body>
+</html>
